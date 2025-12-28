@@ -10,7 +10,7 @@ app.get('/', (req : Request, res : Response) => {
   res.send('Server is running')
 })
 
-app.use('/api/v1/signup', authRoutes)
+app.use('/api/v1/', authRoutes)
 
 
 

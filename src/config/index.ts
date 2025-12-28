@@ -6,4 +6,5 @@ dotenv.config({ path: path.resolve(__dirname, '../../.env') });
 export const config = {
     connectionString: process.env.CONNECTION_STRING || '',
     port : process.env.PORT || 5000,
+    jwtSecret: process.env.JWT_SECRET
 }
