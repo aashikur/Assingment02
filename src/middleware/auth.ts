@@ -1,26 +1,38 @@
 import { NextFunction, Request, Response } from "express";
-import jwt from "jsonwebtoken";
+import jwt, { JwtPayload } from "jsonwebtoken";
 import { config } from "../config";
 
-const auth = (req : Request, res : Response, next: NextFunction) => {
+const auth =  (...roles: string[]) => {
+    return  (req: Request, res: Response, next: NextFunction) => {
+        try {
+            const token = req.headers.authorization;
 
-        const authResult = req.headers.authorization;
-        if (!authResult || !authResult.startsWith('Bearer ')) {
-            return res.status(401).send({ 
+            if (!token) {
+                // !authResult || !authResult.startsWith('Bearer ')
+                return res.status(500).send({
+                    success: false,
+                    message: 'No token found',
+                    errors: []
+                });
+            }
 
-                success: false,
-                message: 'Unauthorized', 
-                errors: [] 
-            });
+            const decoded = jwt
+            .verify(token, config.jwtSecret as string ) as JwtPayload;
+
+            console.log('Decoded JWT from auth:', decoded);
+            console.log('Required roles:', roles);
+
+            // req.user = decoded as Record<string, any>;
+            return next();
+        } catch (err) {
+            res.status(500).json({
+                message: "something went wrong!"
+            })
         }
 
-        const decoded = jwt.verify(
-            // authResult.split(' ')[1],
-            // process.env.JWT_SECRET as string
-            authResult, config.jwtSecret as string
+    }
 
-            
-        );
-    
-    return next();
+
 }
+
+export default auth;
