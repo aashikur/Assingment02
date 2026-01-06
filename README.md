@@ -1,6 +1,6 @@
-# 🚗 Vehicle Rental System
+# Vehicle Rental System
 
-## 🎯 Project Overview
+## Project Overview
 
 A backend API for a vehicle rental management system that handles:
 - **Vehicles** - Manage vehicle inventory with availability tracking
